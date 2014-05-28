@@ -37,6 +37,8 @@ bittorrent-peerid can parse peer ids encoded in the following formats:
 * a 40-character hex string
 * an arbitrarily-sized human-readable utf8 string (must decode to a 20-byte Buffer)
 
+If an unknown peer id is passed in, the returned client will be `unknown`.
+
 ## todo
 
 * ~~Support known Azureus-style clients.~~

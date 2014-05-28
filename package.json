@@ -1,0 +1,42 @@
+{
+  "name": "bittorrent-peerid",
+  "description": "Maps a Bittorrent Peer ID to its corresponding client type and version.",
+  "version": "1.0.0",
+  "author": "Travis Fischer <fisch0920@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/fisch0920/bittorrent-peerid/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "tape": "^2.5.0"
+  },
+  "homepage": "https://github.com/fisch0920/bittorrent-peerid",
+  "keywords": [
+    "torrent",
+    ".torrent",
+    "peer-to-peer",
+    "bittorrent",
+    "webtorrent",
+    "peer"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fisch0920/bittorrent-peerid.git"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "testling": {
+    "files": "test/*.js",
+    "browsers": [
+      "ie/10..latest",
+      "chrome/25..latest",
+      "firefox/20..latest",
+      "safari/6..latest",
+      "opera/15.0..latest"
+    ]
+  }
+}

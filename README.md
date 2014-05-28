@@ -27,7 +27,7 @@ The `parsed` peerid object looks like this:
 
 ```js
 {
-  client: 'uTorrent',
+  client: 'Vuze',
   version: '2.2.0.0'
 }
 ```

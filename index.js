@@ -12,7 +12,6 @@ module.exports = function (peerId) {
 
   if (Buffer.isBuffer(peerId)) {
     buffer = peerId
-    peerId = peerId.toString('utf8')
   } else if (typeof peerId === 'string') {
     buffer = new Buffer(peerId, 'utf8')
 
@@ -97,7 +96,7 @@ module.exports = function (peerId) {
     }
   }
 
-  // Check for BitSpirit / BitComet disregarding from spoof mode
+  // Check for BitSpirit / BitComet disregarding spoof mode
   if ((client = utils.decodeBitSpiritClient(peerId, buffer))) return client
   if ((client = utils.decodeBitCometClient(peerId, buffer))) return client
 
@@ -112,7 +111,7 @@ module.exports = function (peerId) {
     }
   }
 
-  // See if client is a known to be awkward
+  // See if client is known to be awkward / nonstandard
   if ((client = utils.identifyAwkwardClient(peerId, buffer))) {
     return client
   }
@@ -143,7 +142,7 @@ var VER_AZ_SKIP_FIRST_ONE_MAJ_TWO_MIN = "2.34"
 var VER_AZ_KTORRENT_STYLE = "1.2.3=[RD].4"
 var VER_AZ_TRANSMISSION_STYLE = "transmission"
 var VER_AZ_THREE_ALPHANUMERIC_DIGITS = "2.33.4"
-var NO_VERSION = "NO_VERSION"
+var VER_NONE = "NO_VERSION"
 
 function addAzStyle (id, client, version) {
   version = version || VER_AZ_FOUR_DIGITS
@@ -220,7 +219,7 @@ function getAzStyleClientVersion (client, peerId) {
   addAzStyle("BB", "BitBuddy", "1.234")
   addAzStyle("BC", "BitComet", VER_AZ_SKIP_FIRST_ONE_MAJ_TWO_MIN)
   addAzStyle("BE", "BitTorrent SDK")
-  addAzStyle("BF", "BitFlu", NO_VERSION)
+  addAzStyle("BF", "BitFlu", VER_NONE)
   addAzStyle("BG", "BTG", VER_AZ_FOUR_DIGITS)
   addAzStyle("bk", "BitKitten (libtorrent)")
   addAzStyle("BR", "BitRocket", "1.2(34)")
@@ -249,7 +248,7 @@ function getAzStyleClientVersion (client, peerId) {
   addAzStyle("LP", "Lphant", VER_AZ_TWO_MAJ_TWO_MIN)
   addAzStyle("LT", "libtorrent (Rasterbar)", VER_AZ_THREE_ALPHANUMERIC_DIGITS)
   addAzStyle("lt", "libTorrent (Rakshasa)", VER_AZ_THREE_ALPHANUMERIC_DIGITS)
-  addAzStyle("LW", "LimeWire", NO_VERSION) // The "0001" bytes found after the LW commonly refers to the version of the BT protocol implemented. Documented here: http://www.limewire.org/wiki/index.php?title=BitTorrentRevision
+  addAzStyle("LW", "LimeWire", VER_NONE) // The "0001" bytes found after the LW commonly refers to the version of the BT protocol implemented. Documented here: http://www.limewire.org/wiki/index.php?title=BitTorrentRevision
   addAzStyle("MO", "MonoTorrent")
   addAzStyle("MP", "MooPolice", VER_AZ_THREE_DIGITS)
   addAzStyle("MR", "Miro")

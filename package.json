@@ -1,7 +1,7 @@
 {
   "name": "bittorrent-peerid",
   "description": "Maps a Bittorrent Peer ID to its corresponding client type and version.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Travis Fischer <fisch0920@gmail.com>",
   "bugs": {
     "url": "https://github.com/fisch0920/bittorrent-peerid/issues"

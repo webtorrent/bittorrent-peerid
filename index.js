@@ -258,6 +258,7 @@ function getAzStyleClientVersion (client, peerId) {
   addAzStyle("OS", "OneSwarm", VER_AZ_FOUR_DIGITS)
   addAzStyle("OT", "OmegaTorrent")
   addAzStyle("PC", "CacheLogic", "12.3-4" )
+  addAzStyle("PT", "Popcorn Time")
   addAzStyle("PD", "Pando")
   addAzStyle("PE", "PeerProject")
   addAzStyle("pX", "pHoeniX")

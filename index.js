@@ -141,7 +141,7 @@ var VER_AZ_THREE_DIGITS = function(v) {
 var VER_AZ_DELUGE = function(v) {
 	var alphabet = 'ABCDE'
 	if (isNaN(v[2])) {
-		return v[0] + '.' + v[1] + '.1' + (alphabet.indexOf(v[2]) - 1);
+		return v[0] + '.' + v[1] + '.1' + (alphabet.indexOf(v[2]));
 	}
 	return v[0] + '.' + v[1] + '.' + v[2];
 };
@@ -301,7 +301,7 @@ function getAzStyleClientVersion (client, peerId) {
 	addAzStyle("PD", "Pando")
 	addAzStyle("PE", "PeerProject")
 	addAzStyle("pX", "pHoeniX")
-	addAzStyle("qB", "qBittorrent", VER_AZ_THREE_DIGITS)
+	addAzStyle("qB", "qBittorrent", VER_AZ_DELUGE)
 	addAzStyle("QD", "qqdownload")
 	addAzStyle("RT", "Retriever")
 	addAzStyle("RZ", "RezTorrent")

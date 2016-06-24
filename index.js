@@ -8,116 +8,116 @@ var utils = require('./lib/utils')
  * @param {Buffer|string} peerId (as Buffer or hex/utf8 string)
  */
 module.exports = function (peerId) {
-  var buffer
+	var buffer
 
-  if (Buffer.isBuffer(peerId)) {
-    buffer = peerId
-  } else if (typeof peerId === 'string') {
-    buffer = new Buffer(peerId, 'utf8')
+	if (Buffer.isBuffer(peerId)) {
+		buffer = peerId
+	} else if (typeof peerId === 'string') {
+		buffer = new Buffer(peerId, 'utf8')
 
-    // assume utf8 peerId, but if that's invalid, then try hex encoding
-    if (buffer.length !== 20)
-      buffer = new Buffer(peerId, 'hex')
-  } else {
-    throw new Error('Invalid peerId must be Buffer or hex string: ' + peerId)
-  }
+		// assume utf8 peerId, but if that's invalid, then try hex encoding
+		if (buffer.length !== 20)
+			buffer = new Buffer(peerId, 'hex')
+	} else {
+		throw new Error('Invalid peerId must be Buffer or hex string: ' + peerId)
+	}
 
-  if (buffer.length !== 20) {
-    throw new Error('Invalid peerId length (hex buffer must be 20 bytes): ' + peerId)
-  }
+	if (buffer.length !== 20) {
+		throw new Error('Invalid peerId length (hex buffer must be 20 bytes): ' + peerId)
+	}
 
-  // overwrite original peerId string with guaranteed utf8 version
-  peerId = buffer.toString('utf8')
+	// overwrite original peerId string with guaranteed utf8 version
+	peerId = buffer.toString('utf8')
 
-  var UNKNOWN = 'unknown'
-  var FAKE = 'fake'
-  var client = null
-  var version
-  var data
+	var UNKNOWN = 'unknown'
+	var FAKE = 'fake'
+	var client = null
+	var version
+	var data
 
-  // If the client reuses parts of the peer ID of other peers, then try to determine this
-  // first (before we misidentify the client).
-  if (utils.isPossibleSpoofClient(peerId)) {
-    if ((client = utils.decodeBitSpiritClient(peerId, buffer))) return client
-    if ((client = utils.decodeBitCometClient(peerId, buffer))) return client
-    return { client: "BitSpirit?" }
-  }
+	// If the client reuses parts of the peer ID of other peers, then try to determine this
+	// first (before we misidentify the client).
+	if (utils.isPossibleSpoofClient(peerId)) {
+		if ((client = utils.decodeBitSpiritClient(peerId, buffer))) return client
+		if ((client = utils.decodeBitCometClient(peerId, buffer))) return client
+		return { client: "BitSpirit?" }
+	}
 
-  // See if the client uses Az style identification
-  if (utils.isAzStyle(peerId)) {
-    if ((client = getAzStyleClientName(peerId))) {
-      version = getAzStyleClientVersion(client, peerId)
+	// See if the client uses Az style identification
+	if (utils.isAzStyle(peerId)) {
+		if ((client = getAzStyleClientName(peerId))) {
+			version = getAzStyleClientVersion(client, peerId)
 
-      // Hack for fake ZipTorrent clients - there seems to be some clients
-      // which use the same identifier, but they aren't valid ZipTorrent clients
-      if (client.startsWith("ZipTorrent") && peerId.startsWith("bLAde", 8)) {
-        return {
-          client: UNKNOWN + " [" + FAKE  + ": " + name + "]",
-          version: version
-        }
-      }
+			// Hack for fake ZipTorrent clients - there seems to be some clients
+			// which use the same identifier, but they aren't valid ZipTorrent clients
+			if (client.startsWith("ZipTorrent") && peerId.startsWith("bLAde", 8)) {
+				return {
+					client: UNKNOWN + " [" + FAKE  + ": " + name + "]",
+					version: version
+				}
+			}
 
-      // BitTorrent 6.0 Beta currently misidentifies itself
-      if ("\u00B5Torrent" === client && "6.0 Beta" === version) {
-        return {
-          client: "Mainline",
-          version: "6.0 Beta"
-        }
-      }
+			// BitTorrent 6.0 Beta currently misidentifies itself
+			if ("\u00B5Torrent" === client && "6.0 Beta" === version) {
+				return {
+					client: "Mainline",
+					version: "6.0 Beta"
+				}
+			}
 
-      // If it's the rakshasa libtorrent, then it's probably rTorrent
-      if (client.startsWith("libTorrent (Rakshasa)")) {
-        return {
-          client: client + " / rTorrent*",
-          version: version
-        }
-      }
+			// If it's the rakshasa libtorrent, then it's probably rTorrent
+			if (client.startsWith("libTorrent (Rakshasa)")) {
+				return {
+					client: client + " / rTorrent*",
+					version: version
+				}
+			}
 
-      return {
-        client: client,
-        version: version
-      }
-    }
-  }
+			return {
+				client: client,
+				version: version
+			}
+		}
+	}
 
-  // See if the client uses Shadow style identification
-  if (utils.isShadowStyle(peerId)) {
-    if ((client = getShadowStyleClientName(peerId))) {
-      // TODO: handle shadow style client version numbers
-      return { client: client }
-    }
-  }
+	// See if the client uses Shadow style identification
+	if (utils.isShadowStyle(peerId)) {
+		if ((client = getShadowStyleClientName(peerId))) {
+			// TODO: handle shadow style client version numbers
+			return { client: client }
+		}
+	}
 
-  // See if the client uses Mainline style identification
-  if (utils.isMainlineStyle(peerId)) {
-    if ((client = getMainlineStyleClientName(peerId))) {
-      // TODO: handle mainline style client version numbers
-      return { client: client }
-    }
-  }
+	// See if the client uses Mainline style identification
+	if (utils.isMainlineStyle(peerId)) {
+		if ((client = getMainlineStyleClientName(peerId))) {
+			// TODO: handle mainline style client version numbers
+			return { client: client }
+		}
+	}
 
-  // Check for BitSpirit / BitComet disregarding spoof mode
-  if ((client = utils.decodeBitSpiritClient(peerId, buffer))) return client
-  if ((client = utils.decodeBitCometClient(peerId, buffer))) return client
+	// Check for BitSpirit / BitComet disregarding spoof mode
+	if ((client = utils.decodeBitSpiritClient(peerId, buffer))) return client
+	if ((client = utils.decodeBitCometClient(peerId, buffer))) return client
 
-  // See if the client identifies itself using a particular substring
-  if ((data = getSimpleClient(peerId))) {
-    client = data.client
+	// See if the client identifies itself using a particular substring
+	if ((data = getSimpleClient(peerId))) {
+		client = data.client
 
-    // TODO: handle simple client version numbers
-    return {
-      client: client,
-      version: data.version
-    }
-  }
+		// TODO: handle simple client version numbers
+		return {
+			client: client,
+			version: data.version
+		}
+	}
 
-  // See if client is known to be awkward / nonstandard
-  if ((client = utils.identifyAwkwardClient(peerId, buffer))) {
-    return client
-  }
+	// See if client is known to be awkward / nonstandard
+	if ((client = utils.identifyAwkwardClient(peerId, buffer))) {
+		return client
+	}
 
-  // TODO: handle unknown az-formatted and shadow-formatted clients
-  return { client: "unknown" }
+	// TODO: handle unknown az-formatted and shadow-formatted clients
+	return { client: "unknown" }
 }
 
 // Az style two byte code identifiers to real client name
@@ -179,74 +179,89 @@ var VER_AZ_TRANSMISSION_STYLE = function(v) {
 	}
 	return v[0] + '.' + v[1] + v[2] + (v[3] == 'Z' || v[3] == 'X' ? "+" : "")
 };
+var VER_AZ_WEBTORRENT_STYLE = function(v) {
+	// "webtorrent"
+	var version = ''
+	if (v[0] == '0') {
+		version += v[1] + '.'
+	} else {
+		version += '' + v[0] + v[1] + '.'
+	}
+	if (v[2] == '0') {
+		version += v[3]
+	} else {
+		version += '' + v[2] + v[3]
+	}
+	return version
+};
 var VER_AZ_THREE_ALPHANUMERIC_DIGITS = "2.33.4"
 var VER_NONE = "NO_VERSION"
 
 function addAzStyle (id, client, version) {
-  version = version || VER_AZ_FOUR_DIGITS
-  azStyleClients[id] = client
-  azStyleClientVersions[client] = version
+	version = version || VER_AZ_FOUR_DIGITS
+	azStyleClients[id] = client
+	azStyleClientVersions[client] = version
 }
 
 function addShadowStyle (id, client, version) {
-  version = version || VER_AZ_THREE_DIGITS
-  shadowStyleClients[id] = client
-  shadowStyleClientVersions[client] = version
+	version = version || VER_AZ_THREE_DIGITS
+	shadowStyleClients[id] = client
+	shadowStyleClientVersions[client] = version
 }
 
 function addMainlineStyle (id, client) {
-  mainlineStyleClients[id] = client
+	mainlineStyleClients[id] = client
 }
 
 function addSimpleClient (client, version, id, position) {
-  if (typeof id === 'number' || typeof id === 'undefined') {
-    position = id
-    id = version
-    version = undefined
-  }
+	if (typeof id === 'number' || typeof id === 'undefined') {
+		position = id
+		id = version
+		version = undefined
+	}
 
-  customStyleClients.push({
-    id: id,
-    client: client,
-    version: version,
-    position: position || 0
-  })
+	customStyleClients.push({
+		id: id,
+		client: client,
+		version: version,
+		position: position || 0
+	})
 }
 
 function getAzStyleClientName (peerId) {
-  return azStyleClients[peerId.substring(1, 3)]
+	return azStyleClients[peerId.substring(1, 3)]
 }
 
 function getShadowStyleClientName (peerId) {
-  return shadowStyleClients[peerId.substring(0, 1)]
+	return shadowStyleClients[peerId.substring(0, 1)]
 }
 
 function getMainlineStyleClientName (peerId) {
-  return mainlineStyleClients[peerId.substring(0, 1)]
+	return mainlineStyleClients[peerId.substring(0, 1)]
 }
 
 function getSimpleClient (peerId) {
-  for (var i = 0; i < customStyleClients.length; ++i) {
-    var client = customStyleClients[i]
+	for (var i = 0; i < customStyleClients.length; ++i) {
+		var client = customStyleClients[i]
 
-    if (peerId.startsWith(client.id, client.position)) {
-      return client
-    }
-  }
+		if (peerId.startsWith(client.id, client.position)) {
+			return client
+		}
+	}
 
-  return null
+	return null
 }
 
 function getAzStyleClientVersion (client, peerId) {
-  var version = azStyleClientVersions[client]
-  if (!version) return null
+	var version = azStyleClientVersions[client]
+	if (!version) return null
 
-  return utils.getAzStyleVersionNumber(peerId.substring(3, 7), version)
+	return utils.getAzStyleVersionNumber(peerId.substring(3, 7), version)
 }
 
 (function () {
-  // add known clients alphabetically
-  addAzStyle("A~", "Ares", VER_AZ_THREE_DIGITS)
+	// add known clients alphabetically
+	addAzStyle("A~", "Ares", VER_AZ_THREE_DIGITS)
 	addAzStyle("AG", "Ares", VER_AZ_THREE_DIGITS)
 	addAzStyle("AN", "Ares", VER_AZ_FOUR_DIGITS)
 	addAzStyle("AR", "Ares")// Ares is more likely than ArcticTorrent
@@ -323,8 +338,9 @@ function getAzStyleClientVersion (client, peerId) {
 	addAzStyle("UE", "\u00B5Torrent Embedded", VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
 	addAzStyle("UT", "\u00B5Torrent", VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
 	addAzStyle("UM", "\u00B5Torrent Mac", VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
+	addAzStyle("WD", "WebTorrent Desktop", VER_AZ_WEBTORRENT_STYLE)// Go Webtorrent!! :)
 	addAzStyle("WT", "Bitlet")
-	addAzStyle("WW", "WebTorrent")// Go Webtorrent!! :)
+	addAzStyle("WW", "WebTorrent", VER_AZ_WEBTORRENT_STYLE)// Go Webtorrent!! :)
 	addAzStyle("WY", "FireTorrent")// formerly Wyzo.
 	addAzStyle("VG", "\u54c7\u560E (Vagaa)", VER_AZ_FOUR_DIGITS)
 	addAzStyle("XL", "\u8FC5\u96F7\u5728\u7EBF (Xunlei)")// Apparently, the English name of the client is "Thunderbolt".

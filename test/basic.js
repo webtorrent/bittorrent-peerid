@@ -138,8 +138,23 @@ test('Unknown clients', function (t) {
   t.end()
 })
 
-test('Webtorrent', function (t) {
-  t.equal(peerid("-WW0000-Em6o1EmvwLtD").client, "WebTorrent")
-  t.end()
+test('WebTorrent', function (t) {
+	var parsed = peerid("-WW0000-Em6o1EmvwLtD")
+	t.equal(parsed.client, "WebTorrent")
+	t.equal(parsed.version, "0.0")
+	t.equal(peerid("-WW0100-Em6o1EmvwLtD").version, "1.0")
+	t.equal(peerid("-WW1000-Em6o1EmvwLtD").version, "10.0")
+	t.equal(peerid("-WW0001-Em6o1EmvwLtD").version, "0.1")
+	t.equal(peerid("-WW0010-Em6o1EmvwLtD").version, "0.10")
+	t.equal(peerid("-WW0011-Em6o1EmvwLtD").version, "0.11")
+	t.equal(peerid("-WW1011-Em6o1EmvwLtD").version, "10.11")
+	t.equal(peerid("-WW1111-Em6o1EmvwLtD").version, "11.11")
+	t.end()
 })
 
+test('WebTorrent Desktop', function (t) {
+	var parsed = peerid("-WD0007-Em6o1EmvwLtD")
+	t.equal(parsed.client, "WebTorrent Desktop")
+	t.equal(parsed.version, "0.7")
+	t.end()
+})

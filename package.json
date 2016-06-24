@@ -6,10 +6,9 @@
   "bugs": {
     "url": "https://github.com/fisch0920/bittorrent-peerid/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "tape": "^2.5.0"
+    "tape": "^4.6.0"
   },
   "homepage": "https://github.com/fisch0920/bittorrent-peerid",
   "keywords": [

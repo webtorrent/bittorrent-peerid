@@ -179,6 +179,21 @@ var VER_AZ_TRANSMISSION_STYLE = function(v) {
 	}
 	return v[0] + '.' + v[1] + v[2] + (v[3] == 'Z' || v[3] == 'X' ? "+" : "")
 };
+var VER_AZ_WEBTORRENT_STYLE = function(v) {
+	// "webtorrent"
+	var version = ''
+	if (v[0] == '0') {
+		version += v[1] + '.'
+	} else {
+		version += '' + v[0] + v[1] + '.'
+	}
+	if (v[2] == '0') {
+		version += v[3]
+	} else {
+		version += '' + v[2] + v[3]
+	}
+	return version
+};
 var VER_AZ_THREE_ALPHANUMERIC_DIGITS = "2.33.4"
 var VER_NONE = "NO_VERSION"
 
@@ -323,8 +338,9 @@ function getAzStyleClientVersion (client, peerId) {
 	addAzStyle("UE", "\u00B5Torrent Embedded", VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
 	addAzStyle("UT", "\u00B5Torrent", VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
 	addAzStyle("UM", "\u00B5Torrent Mac", VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
+	addAzStyle("WD", "WebTorrent Desktop", VER_AZ_WEBTORRENT_STYLE)// Go Webtorrent!! :)
 	addAzStyle("WT", "Bitlet")
-	addAzStyle("WW", "WebTorrent")// Go Webtorrent!! :)
+	addAzStyle("WW", "WebTorrent", VER_AZ_WEBTORRENT_STYLE)// Go Webtorrent!! :)
 	addAzStyle("WY", "FireTorrent")// formerly Wyzo.
 	addAzStyle("VG", "\u54c7\u560E (Vagaa)", VER_AZ_FOUR_DIGITS)
 	addAzStyle("XL", "\u8FC5\u96F7\u5728\u7EBF (Xunlei)")// Apparently, the English name of the client is "Thunderbolt".

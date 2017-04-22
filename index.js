@@ -133,7 +133,7 @@ var mainlineStyleClients = {}
 var customStyleClients = []
 
 var VER_AZ_THREE_DIGITS = function (v) {
-	// "1.2.3"
+  // "1.2.3"
   return v[0] + '.' + v[1] + '.' + v[2]
 }
 var VER_AZ_DELUGE = function (v) {
@@ -144,11 +144,11 @@ var VER_AZ_DELUGE = function (v) {
   return v[0] + '.' + v[1] + '.' + v[2]
 }
 var VER_AZ_THREE_DIGITS_PLUS_MNEMONIC = function (v) {
-	// "1.2.3 [4]"
+  // "1.2.3 [4]"
   var mnemonic = v[3]
-  if (mnemonic == 'B') {
+  if (mnemonic === 'B') {
     mnemonic = 'Beta'
-  } else if (mnemonic == 'A') {
+  } else if (mnemonic === 'A') {
     mnemonic = 'Alpha'
   } else {
     mnemonic = ''
@@ -156,36 +156,36 @@ var VER_AZ_THREE_DIGITS_PLUS_MNEMONIC = function (v) {
   return v[0] + '.' + v[1] + '.' + v[2] + ' ' + mnemonic
 }
 var VER_AZ_FOUR_DIGITS = function (v) {
-	// "1.2.3.4"
+  // "1.2.3.4"
   return v[0] + '.' + v[1] + '.' + v[2] + '.' + v[3]
 }
 var VER_AZ_TWO_MAJ_TWO_MIN = function (v) {
-	// "12.34"
+  // "12.34"
   return v[0] + v[1] + '.' + v[2] + v[3]
 }
 var VER_AZ_SKIP_FIRST_ONE_MAJ_TWO_MIN = function (v) {
-	// "2.34"
+  // "2.34"
   return v[1] + '.' + v[2] + v[3]
 }
 var VER_AZ_KTORRENT_STYLE = '1.2.3=[RD].4'
 var VER_AZ_TRANSMISSION_STYLE = function (v) {
-	// "transmission"
-  if (v[0] == '0' && v[1] == '0' && v[2] == '0') {
+  // "transmission"
+  if (v[0] === '0' && v[1] === '0' && v[2] === '0') {
     return '0.' + v[3]
-  } else if (v[0] == '0' && v[1] == '0') {
+  } else if (v[0] === '0' && v[1] === '0') {
     return '0.' + v[2] + v[3]
   }
-  return v[0] + '.' + v[1] + v[2] + (v[3] == 'Z' || v[3] == 'X' ? '+' : '')
+  return v[0] + '.' + v[1] + v[2] + (v[3] === 'Z' || v[3] === 'X' ? '+' : '')
 }
 var VER_AZ_WEBTORRENT_STYLE = function (v) {
-	// "webtorrent"
+  // "webtorrent"
   var version = ''
-  if (v[0] == '0') {
+  if (v[0] === '0') {
     version += v[1] + '.'
   } else {
     version += '' + v[0] + v[1] + '.'
   }
-  if (v[2] == '0') {
+  if (v[2] === '0') {
     version += v[3]
   } else {
     version += '' + v[2] + v[3]
@@ -362,7 +362,7 @@ function getAzStyleClientVersion (client, peerId) {
   addMainlineStyle('M', 'Mainline')
   addMainlineStyle('Q', 'Queen Bee')
 
-	// Simple clients with no version number.
+  // Simple clients with no version number.
   addSimpleClient('\u00B5Torrent', '1.7.0 RC', '-UT170-')// http://forum.utorrent.com/viewtopic.php?pid=260927#p260927
   addSimpleClient('Azureus', '1', 'Azureus')
   addSimpleClient('Azureus', '2.0.3.2', 'Azureus', 5)
@@ -397,19 +397,19 @@ function getAzStyleClientVersion (client, peerId) {
   addSimpleClient('MediaGet', '-MG1')
   addSimpleClient('MediaGet', '2.1', '-MG21')
 
-	/**
-	 * This is interesting - it uses Mainline style, except uses two characters instead of one.
-	 * And then - the particular numbering style it uses would actually break the way we decode
-	 * version numbers (our code is too hardcoded to "-x-y-z--" style version numbers).
-	 *
-	 * This should really be declared as a Mainline style peer ID, but I would have to
-	 * make my code more generic. Not a bad thing - just something I'm not doing right
-	 * now.
-	 */
+  /**
+   * This is interesting - it uses Mainline style, except uses two characters instead of one.
+   * And then - the particular numbering style it uses would actually break the way we decode
+   * version numbers (our code is too hardcoded to "-x-y-z--" style version numbers).
+   *
+   * This should really be declared as a Mainline style peer ID, but I would have to
+   * make my code more generic. Not a bad thing - just something I'm not doing right
+   * now.
+   */
   addSimpleClient('Amazon AWS S3', 'S3-')
 
-	// Simple clients with custom version schemes
-	// TODO: support custom version schemes
+  // Simple clients with custom version schemes
+  // TODO: support custom version schemes
   addSimpleClient('BitTorrent DNA', 'DNA')
   addSimpleClient('Opera', 'OP')// Pre build 10000 versions
   addSimpleClient('Opera', 'O')// Post build 10000 versions
@@ -427,11 +427,11 @@ function getAzStyleClientVersion (client, peerId) {
   addSimpleClient('Rufus', 'RS', 2)
   addSimpleClient('BitMagnet', 'BM', 2)// BitMagnet - predecessor to Rufus
   addSimpleClient('QVOD', 'QVOD')
-	// Top-BT is based on BitTornado, but doesn't quite stick to Shadow's naming conventions,
-	// so we'll use substring matching instead.
+  // Top-BT is based on BitTornado, but doesn't quite stick to Shadow's naming conventions,
+  // so we'll use substring matching instead.
   addSimpleClient('Top-BT', 'TB')
   addSimpleClient('Tixati', 'TIX')
-	// seems to have a sub-version encoded in following 3 bytes, not worked out how: "folx/1.0.456.591" : 2D 464C 3130 FF862D 486263574A43585F66314D5A
+  // seems to have a sub-version encoded in following 3 bytes, not worked out how: "folx/1.0.456.591" : 2D 464C 3130 FF862D 486263574A43585F66314D5A
   addSimpleClient('folx', '-FL')
   addSimpleClient('\u00B5Torrent Mac', '-UM')
   addSimpleClient('\u00B5Torrent', '-UT') // UT 3.4+

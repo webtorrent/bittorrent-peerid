@@ -22,11 +22,11 @@ test('basic clients from hex strings', function (t) {
 })
 
 test('basic clients from Buffers', function (t) {
-  t.equal(peerid(new Buffer('-AG2053-Em6o1EmvwLtD', 'utf8')).client, 'Ares')
-  t.equal(peerid(new Buffer('-AZ2200-6wfG2wk6wWLc', 'utf8')).client, 'Vuze')
-  t.equal(peerid(new Buffer('-TR0072-8vd6hrmp04an', 'utf8')).client, 'Transmission')
-  t.equal(peerid(new Buffer('-WY0300-6huHF5Pr7Vde', 'utf8')).client, 'FireTorrent')
-  t.equal(peerid(new Buffer('-PC251Q-6huHF5Pr7Vde', 'utf8')).client, 'CacheLogic')
+  t.equal(peerid(Buffer.from('-AG2053-Em6o1EmvwLtD', 'utf8')).client, 'Ares')
+  t.equal(peerid(Buffer.from('-AZ2200-6wfG2wk6wWLc', 'utf8')).client, 'Vuze')
+  t.equal(peerid(Buffer.from('-TR0072-8vd6hrmp04an', 'utf8')).client, 'Transmission')
+  t.equal(peerid(Buffer.from('-WY0300-6huHF5Pr7Vde', 'utf8')).client, 'FireTorrent')
+  t.equal(peerid(Buffer.from('-PC251Q-6huHF5Pr7Vde', 'utf8')).client, 'CacheLogic')
   t.end()
 })
 

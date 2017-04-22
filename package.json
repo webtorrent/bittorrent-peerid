@@ -1,7 +1,7 @@
 {
   "name": "bittorrent-peerid",
   "description": "Map a BitTorrent peer ID to a human-readable client name and version",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "author": {
     "name": "WebTorrent, LLC",
     "email": "feross@webtorrent.io",

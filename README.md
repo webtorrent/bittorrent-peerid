@@ -1,12 +1,19 @@
-# bittorrent-peerid [![travis](https://img.shields.io/travis/fisch0920/bittorrent-peerid.svg)](https://travis-ci.org/fisch0920/bittorrent-peerid) [![npm](https://img.shields.io/npm/v/bittorrent-peerid.svg)](https://npmjs.org/package/bittorrent-peerid) [![downloads](https://img.shields.io/npm/dm/bittorrent-peerid.svg)](https://npmjs.org/package/bittorrent-peerid)
+# bittorrent-peerid [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]
 
-#### Maps a Bittorrent Peer ID to its corresponding client type and version.
+[travis-image]: https://img.shields.io/travis/webtorrent/bittorrent-peerid/master.svg
+[travis-url]: https://travis-ci.org/webtorrent/bittorrent-peerid
+[npm-image]: https://img.shields.io/npm/v/bittorrent-peerid.svg
+[npm-url]: https://npmjs.org/package/bittorrent-peerid
+[downloads-image]: https://img.shields.io/npm/dm/bittorrent-peerid.svg
+[downloads-url]: https://npmjs.org/package/bittorrent-peerid
+[standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
+[standard-url]: https://standardjs.com
 
-[![browser support](https://ci.testling.com/fisch0920/bittorrent-peerid.png)](https://ci.testling.com/fisch0920/bittorrent-peerid)
+### Map a BitTorrent peer ID to a human-readable client name and version
 
 Also works in the browser with [browserify](http://browserify.org/)!
 
-This module is used by [WebTorrent](http://webtorrent.io).
+This module is used by [WebTorrent](https://webtorrent.io).
 
 ## install
 
@@ -61,4 +68,4 @@ This module is based heavily on the BTPeerIDByteDecoderDefinitions class from [A
 
 ## license
 
-MIT. Copyright (c) Travis Fischer.
+MIT. Copyright (c) Travis Fischer and [WebTorrent, LLC](https://webtorrent.io).

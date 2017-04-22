@@ -1,41 +1,35 @@
 {
   "name": "bittorrent-peerid",
-  "description": "Maps a Bittorrent Peer ID to its corresponding client type and version.",
+  "description": "Map a BitTorrent peer ID to a human-readable client name and version",
   "version": "1.1.1",
-  "author": "Travis Fischer <fisch0920@gmail.com>",
+  "author": {
+    "name": "WebTorrent, LLC",
+    "email": "feross@webtorrent.io",
+    "url": "https://webtorrent.io"
+  },
   "bugs": {
-    "url": "https://github.com/fisch0920/bittorrent-peerid/issues"
+    "url": "https://github.com/webtorrent/bittorrent-peerid/issues"
   },
   "dependencies": {},
   "devDependencies": {
+    "standard": "*",
     "tape": "^4.6.0"
   },
-  "homepage": "https://github.com/fisch0920/bittorrent-peerid",
   "keywords": [
-    "torrent",
     ".torrent",
-    "peer-to-peer",
     "bittorrent",
-    "webtorrent",
-    "peer"
+    "peer",
+    "peer-to-peer",
+    "torrent",
+    "webtorrent"
   ],
   "license": "MIT",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/fisch0920/bittorrent-peerid.git"
+    "url": "git://github.com/webtorrent/bittorrent-peerid.git"
   },
   "scripts": {
-    "test": "tape test/*.js"
-  },
-  "testling": {
-    "files": "test/*.js",
-    "browsers": [
-      "ie/10..latest",
-      "chrome/25..latest",
-      "firefox/20..latest",
-      "safari/6..latest",
-      "opera/15.0..latest"
-    ]
+    "test": "standard && tape test/*.js"
   }
 }

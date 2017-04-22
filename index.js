@@ -27,11 +27,7 @@ module.exports = function (peerId) {
   // overwrite original peerId string with guaranteed utf8 version
   peerId = buffer.toString('utf8')
 
-  var UNKNOWN = 'unknown'
-  var FAKE = 'fake'
   var client = null
-  var version
-  var data
 
   // If the client reuses parts of the peer ID of other peers, then try to determine this
   // first (before we misidentify the client).
@@ -44,13 +40,13 @@ module.exports = function (peerId) {
   // See if the client uses Az style identification
   if (utils.isAzStyle(peerId)) {
     if ((client = getAzStyleClientName(peerId))) {
-      version = getAzStyleClientVersion(client, peerId)
+      var version = getAzStyleClientVersion(client, peerId)
 
       // Hack for fake ZipTorrent clients - there seems to be some clients
       // which use the same identifier, but they aren't valid ZipTorrent clients
       if (client.startsWith('ZipTorrent') && peerId.startsWith('bLAde', 8)) {
         return {
-          client: UNKNOWN + ' [' + FAKE + ': ' + name + ']',
+          client: 'Unknown [Fake: ZipTorrent]',
           version: version
         }
       }
@@ -99,7 +95,8 @@ module.exports = function (peerId) {
   if ((client = utils.decodeBitCometClient(peerId, buffer))) return client
 
   // See if the client identifies itself using a particular substring
-  if ((data = getSimpleClient(peerId))) {
+  var data = getSimpleClient(peerId)
+  if (data) {
     client = data.client
 
     // TODO: handle simple client version numbers

@@ -1,6 +1,4 @@
-# bittorrent-peerid [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/webtorrent/bittorrent-peerid.svg)](https://greenkeeper.io/)
+# bittorrent-peerid [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url] [![Greenkeeper badge][greenkeeper-image]][greenkeeper-url]
 
 [travis-image]: https://img.shields.io/travis/webtorrent/bittorrent-peerid/master.svg
 [travis-url]: https://travis-ci.org/webtorrent/bittorrent-peerid
@@ -10,6 +8,8 @@
 [downloads-url]: https://npmjs.org/package/bittorrent-peerid
 [standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [standard-url]: https://standardjs.com
+[greenkeeper-image]: https://badges.greenkeeper.io/webtorrent/bittorrent-peerid.svg
+[greenkeeper-url]: https://greenkeeper.io/
 
 ### Map a BitTorrent peer ID to a human-readable client name and version
 

@@ -1,4 +1,4 @@
-var utils = require('./lib/utils')
+const utils = require('./lib/utils')
 
 /**
  * Parses and returns the client type and version of a bittorrent peer id.
@@ -6,8 +6,8 @@ var utils = require('./lib/utils')
  *
  * @param {Buffer|string} peerId (as Buffer or hex/utf8 string)
  */
-module.exports = function (peerId) {
-  var buffer
+module.exports = peerId => {
+  let buffer
 
   if (Buffer.isBuffer(peerId)) {
     buffer = peerId
@@ -17,17 +17,17 @@ module.exports = function (peerId) {
     // assume utf8 peerId, but if that's invalid, then try hex encoding
     if (buffer.length !== 20) { buffer = Buffer.from(peerId, 'hex') }
   } else {
-    throw new Error('Invalid peerId must be Buffer or hex string: ' + peerId)
+    throw new Error(`Invalid peerId must be Buffer or hex string: ${peerId}`)
   }
 
   if (buffer.length !== 20) {
-    throw new Error('Invalid peerId length (hex buffer must be 20 bytes): ' + peerId)
+    throw new Error(`Invalid peerId length (hex buffer must be 20 bytes): ${peerId}`)
   }
 
   // overwrite original peerId string with guaranteed utf8 version
   peerId = buffer.toString('utf8')
 
-  var client = null
+  let client = null
 
   // If the client reuses parts of the peer ID of other peers, then try to determine this
   // first (before we misidentify the client).
@@ -40,14 +40,14 @@ module.exports = function (peerId) {
   // See if the client uses Az style identification
   if (utils.isAzStyle(peerId)) {
     if ((client = getAzStyleClientName(peerId))) {
-      var version = getAzStyleClientVersion(client, peerId)
+      const version = getAzStyleClientVersion(client, peerId)
 
       // Hack for fake ZipTorrent clients - there seems to be some clients
       // which use the same identifier, but they aren't valid ZipTorrent clients
       if (client.startsWith('ZipTorrent') && peerId.startsWith('bLAde', 8)) {
         return {
           client: 'Unknown [Fake: ZipTorrent]',
-          version: version
+          version
         }
       }
 
@@ -62,14 +62,14 @@ module.exports = function (peerId) {
       // If it's the rakshasa libtorrent, then it's probably rTorrent
       if (client.startsWith('libTorrent (Rakshasa)')) {
         return {
-          client: client + ' / rTorrent*',
-          version: version
+          client: `${client} / rTorrent*`,
+          version
         }
       }
 
       return {
-        client: client,
-        version: version
+        client,
+        version
       }
     }
   }
@@ -78,7 +78,7 @@ module.exports = function (peerId) {
   if (utils.isShadowStyle(peerId)) {
     if ((client = getShadowStyleClientName(peerId))) {
       // TODO: handle shadow style client version numbers
-      return { client: client }
+      return { client }
     }
   }
 
@@ -86,7 +86,7 @@ module.exports = function (peerId) {
   if (utils.isMainlineStyle(peerId)) {
     if ((client = getMainlineStyleClientName(peerId))) {
       // TODO: handle mainline style client version numbers
-      return { client: client }
+      return { client }
     }
   }
 
@@ -95,13 +95,13 @@ module.exports = function (peerId) {
   if ((client = utils.decodeBitCometClient(peerId, buffer))) return client
 
   // See if the client identifies itself using a particular substring
-  var data = getSimpleClient(peerId)
+  const data = getSimpleClient(peerId)
   if (data) {
     client = data.client
 
     // TODO: handle simple client version numbers
     return {
-      client: client,
+      client,
       version: data.version
     }
   }
@@ -116,33 +116,31 @@ module.exports = function (peerId) {
 }
 
 // Az style two byte code identifiers to real client name
-var azStyleClients = {}
-var azStyleClientVersions = {}
+const azStyleClients = {}
+const azStyleClientVersions = {}
 
 // Shadow's style one byte code identifiers to real client name
-var shadowStyleClients = {}
-var shadowStyleClientVersions = {}
+const shadowStyleClients = {}
+const shadowStyleClientVersions = {}
 
 // Mainline's new style uses one byte code identifiers too
-var mainlineStyleClients = {}
+const mainlineStyleClients = {}
 
 // Clients with completely custom naming schemes
-var customStyleClients = []
+const customStyleClients = []
 
-var VER_AZ_THREE_DIGITS = function (v) {
-  // "1.2.3"
-  return v[0] + '.' + v[1] + '.' + v[2]
-}
-var VER_AZ_DELUGE = function (v) {
-  var alphabet = 'ABCDE'
+const VER_AZ_THREE_DIGITS = v => // "1.2.3"
+  `${v[0]}.${v[1]}.${v[2]}`
+const VER_AZ_DELUGE = v => {
+  const alphabet = 'ABCDE'
   if (isNaN(v[2])) {
-    return v[0] + '.' + v[1] + '.1' + (alphabet.indexOf(v[2]))
+    return `${v[0]}.${v[1]}.1${alphabet.indexOf(v[2])}`
   }
-  return v[0] + '.' + v[1] + '.' + v[2]
+  return `${v[0]}.${v[1]}.${v[2]}`
 }
-var VER_AZ_THREE_DIGITS_PLUS_MNEMONIC = function (v) {
+const VER_AZ_THREE_DIGITS_PLUS_MNEMONIC = v => {
   // "1.2.3 [4]"
-  var mnemonic = v[3]
+  let mnemonic = v[3]
   if (mnemonic === 'B') {
     mnemonic = 'Beta'
   } else if (mnemonic === 'A') {
@@ -150,56 +148,48 @@ var VER_AZ_THREE_DIGITS_PLUS_MNEMONIC = function (v) {
   } else {
     mnemonic = ''
   }
-  return v[0] + '.' + v[1] + '.' + v[2] + ' ' + mnemonic
+  return `${v[0]}.${v[1]}.${v[2]} ${mnemonic}`
 }
-var VER_AZ_FOUR_DIGITS = function (v) {
-  // "1.2.3.4"
-  return v[0] + '.' + v[1] + '.' + v[2] + '.' + v[3]
-}
-var VER_AZ_TWO_MAJ_TWO_MIN = function (v) {
-  // "12.34"
-  return v[0] + v[1] + '.' + v[2] + v[3]
-}
-var VER_AZ_SKIP_FIRST_ONE_MAJ_TWO_MIN = function (v) {
-  // "2.34"
-  return v[1] + '.' + v[2] + v[3]
-}
-var VER_AZ_KTORRENT_STYLE = '1.2.3=[RD].4'
-var VER_AZ_TRANSMISSION_STYLE = function (v) {
+const VER_AZ_FOUR_DIGITS = v => // "1.2.3.4"
+  `${v[0]}.${v[1]}.${v[2]}.${v[3]}`
+const VER_AZ_TWO_MAJ_TWO_MIN = v => // "12.34"
+  `${v[0] + v[1]}.${v[2]}${v[3]}`
+const VER_AZ_SKIP_FIRST_ONE_MAJ_TWO_MIN = v => // "2.34"
+  `${v[1]}.${v[2]}${v[3]}`
+const VER_AZ_KTORRENT_STYLE = '1.2.3=[RD].4'
+const VER_AZ_TRANSMISSION_STYLE = v => {
   // "transmission"
   if (v[0] === '0' && v[1] === '0' && v[2] === '0') {
-    return '0.' + v[3]
+    return `0.${v[3]}`
   } else if (v[0] === '0' && v[1] === '0') {
-    return '0.' + v[2] + v[3]
+    return `0.${v[2]}${v[3]}`
   }
-  return v[0] + '.' + v[1] + v[2] + (v[3] === 'Z' || v[3] === 'X' ? '+' : '')
+  return `${v[0]}.${v[1]}${v[2]}${v[3] === 'Z' || v[3] === 'X' ? '+' : ''}`
 }
-var VER_AZ_WEBTORRENT_STYLE = function (v) {
+const VER_AZ_WEBTORRENT_STYLE = v => {
   // "webtorrent"
-  var version = ''
+  let version = ''
   if (v[0] === '0') {
-    version += v[1] + '.'
+    version += `${v[1]}.`
   } else {
-    version += '' + v[0] + v[1] + '.'
+    version += `${v[0]}${v[1]}.`
   }
   if (v[2] === '0') {
     version += v[3]
   } else {
-    version += '' + v[2] + v[3]
+    version += `${v[2]}${v[3]}`
   }
   return version
 }
-var VER_AZ_THREE_ALPHANUMERIC_DIGITS = '2.33.4'
-var VER_NONE = 'NO_VERSION'
+const VER_AZ_THREE_ALPHANUMERIC_DIGITS = '2.33.4'
+const VER_NONE = 'NO_VERSION'
 
-function addAzStyle (id, client, version) {
-  version = version || VER_AZ_FOUR_DIGITS
+function addAzStyle (id, client, version = VER_AZ_FOUR_DIGITS) {
   azStyleClients[id] = client
   azStyleClientVersions[client] = version
 }
 
-function addShadowStyle (id, client, version) {
-  version = version || VER_AZ_THREE_DIGITS
+function addShadowStyle (id, client, version = VER_AZ_THREE_DIGITS) {
   shadowStyleClients[id] = client
   shadowStyleClientVersions[client] = version
 }
@@ -216,9 +206,9 @@ function addSimpleClient (client, version, id, position) {
   }
 
   customStyleClients.push({
-    id: id,
-    client: client,
-    version: version,
+    id,
+    client,
+    version,
     position: position || 0
   })
 }
@@ -236,8 +226,8 @@ function getMainlineStyleClientName (peerId) {
 }
 
 function getSimpleClient (peerId) {
-  for (var i = 0; i < customStyleClients.length; ++i) {
-    var client = customStyleClients[i]
+  for (let i = 0; i < customStyleClients.length; ++i) {
+    const client = customStyleClients[i]
 
     if (peerId.startsWith(client.id, client.position)) {
       return client
@@ -248,13 +238,13 @@ function getSimpleClient (peerId) {
 }
 
 function getAzStyleClientVersion (client, peerId) {
-  var version = azStyleClientVersions[client]
+  const version = azStyleClientVersions[client]
   if (!version) return null
 
   return utils.getAzStyleVersionNumber(peerId.substring(3, 7), version)
 }
 
-(function () {
+((() => {
   // add known clients alphabetically
   addAzStyle('A~', 'Ares', VER_AZ_THREE_DIGITS)
   addAzStyle('AG', 'Ares', VER_AZ_THREE_DIGITS)
@@ -432,4 +422,4 @@ function getAzStyleClientVersion (client, peerId) {
   addSimpleClient('folx', '-FL')
   addSimpleClient('\u00B5Torrent Mac', '-UM')
   addSimpleClient('\u00B5Torrent', '-UT') // UT 3.4+
-})()
+}))()

@@ -24,8 +24,8 @@ npm install bittorrent-peerid
 ## usage
 
 ```js
-var peerid = require('bittorrent-peerid')
-var parsed = peerid('-AZ2200-6wfG2wk6wWLc')
+const peerid = require('bittorrent-peerid')
+const parsed = peerid('-AZ2200-6wfG2wk6wWLc')
 
 console.log(parsed.client, parsed.version)
 ```

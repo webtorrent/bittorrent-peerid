@@ -1,10 +1,10 @@
 // TODO: test versions
 // TODO: test clients with custom versioning schemes
 
-var peerid = require('../')
-var test = require('tape')
+const peerid = require('../')
+const test = require('tape')
 
-test('basic clients from utf8 strings', function (t) {
+test('basic clients from utf8 strings', t => {
   t.equal(peerid('-AG2053-Em6o1EmvwLtD').client, 'Ares')
   t.equal(peerid('-AZ2200-6wfG2wk6wWLc').client, 'Vuze')
   t.equal(peerid('-TR0072-8vd6hrmp04an').client, 'Transmission')
@@ -13,7 +13,7 @@ test('basic clients from utf8 strings', function (t) {
   t.end()
 })
 
-test('basic clients from hex strings', function (t) {
+test('basic clients from hex strings', t => {
   t.equal(peerid('2D535A323133322D000000000000000000000000').client, 'Shareaza')
   t.equal(peerid('2D5554313730422D928446441DB0A094A01C01E5').client, '\u00B5Torrent')
   t.equal(peerid('2D4C57303030312D31E0B3A0B46F7D4E954F4103').client, 'LimeWire')
@@ -21,7 +21,7 @@ test('basic clients from hex strings', function (t) {
   t.end()
 })
 
-test('basic clients from Buffers', function (t) {
+test('basic clients from Buffers', t => {
   t.equal(peerid(Buffer.from('-AG2053-Em6o1EmvwLtD', 'utf8')).client, 'Ares')
   t.equal(peerid(Buffer.from('-AZ2200-6wfG2wk6wWLc', 'utf8')).client, 'Vuze')
   t.equal(peerid(Buffer.from('-TR0072-8vd6hrmp04an', 'utf8')).client, 'Transmission')
@@ -30,7 +30,7 @@ test('basic clients from Buffers', function (t) {
   t.end()
 })
 
-test('Azureus-style clients', function (t) {
+test('Azureus-style clients', t => {
   t.equal(peerid('-AG2053-Em6o1EmvwLtD').client, 'Ares')
   t.equal(peerid('-AR1670-3Ql6wM3hgtCc').client, 'Ares')
   t.equal(peerid('-AT2520-vEEt0wO6v0cr').client, 'Artemis')
@@ -61,7 +61,7 @@ test('Azureus-style clients', function (t) {
   t.end()
 })
 
-test('Shadow-style clients', function (t) {
+test('Shadow-style clients', t => {
   t.equal(peerid('A--------YMyoBPXYy2L').client, 'ABC')
   t.equal(peerid('413236392D2D2D2D345077199FAEC4A673BECA01').client, 'ABC')
   t.equal(peerid('A310--001v5Gysr4NxNK').client, 'ABC')
@@ -73,7 +73,7 @@ test('Shadow-style clients', function (t) {
   t.end()
 })
 
-test('Simple-style clients', function (t) {
+test('Simple-style clients', t => {
   t.equal(peerid('417A75726575730000000000000000A076F0AEF7').client, 'Azureus')
   t.equal(peerid('2D2D2D2D2D417A757265757354694E7A2A6454A7').client, 'Azureus')
   t.equal(peerid('2D4733416E6F6E796D6F757370E8D9CB30250AD4').client, 'G3 Torrent')
@@ -83,14 +83,14 @@ test('Simple-style clients', function (t) {
   t.end()
 })
 
-test('Mainline-style clients', function (t) {
+test('Mainline-style clients', t => {
   t.equal(peerid('M5-0-7--9aa757efd5be').client, 'Mainline')
   t.equal(peerid('0000000000000000000000004C53441933104277').client, 'Mainline')
   t.equal(peerid('S3-1-0-0--0123456789').client, 'Amazon AWS S3')
   t.end()
 })
 
-test('Version substring-style clients', function (t) {
+test('Version substring-style clients', t => {
   t.equal(peerid('4269744C657430319AEA4E02A09E318D70CCF47D').client, 'Bitlet')
   t.equal(peerid('-BOWP05-EPICNZOGQPHP').client, 'BitsOnWheels')
   t.equal(peerid('Mbrst1-1-32e3c394b43').client, 'Burst!')
@@ -106,7 +106,7 @@ test('Version substring-style clients', function (t) {
   t.end()
 })
 
-test('BitComet/Lord/Spirit', function (t) {
+test('BitComet/Lord/Spirit', t => {
   t.equal(peerid('6578626300387A4463102D6E9AD6723B339F35A9').client, 'BitComet')
   t.equal(peerid('6578626300384C4F52443200048ECED57BD71028').client, 'BitLord')
   t.equal(peerid('4D342D302D322D2D6898D9D0CAF25E4555445030').client, 'BitSpirit?')
@@ -115,7 +115,7 @@ test('BitComet/Lord/Spirit', function (t) {
   t.end()
 })
 
-test('Misc clients', function (t) {
+test('Misc clients', t => {
   t.equal(peerid('TIX0137-i6i6f0i5d5b7').client, 'Tixati')
   t.equal(peerid('2D464C3039C6F22D5F436863327A6D792E283867').client, 'folx')
   t.equal(peerid('-KT22B1-695754334315').client, 'KTorrent')
@@ -129,7 +129,7 @@ test('Misc clients', function (t) {
   t.end()
 })
 
-test('Unknown clients', function (t) {
+test('Unknown clients', t => {
   t.equal(peerid('B5546F7272656E742F3330323520202020202020').client, 'unknown')
   t.equal(peerid('0000000000000000317DA32F831FF041A515FE3C').client, 'unknown')
   t.equal(peerid('000000DF05020020100020200008000000004028').client, 'unknown')
@@ -138,8 +138,8 @@ test('Unknown clients', function (t) {
   t.end()
 })
 
-test('WebTorrent', function (t) {
-  var parsed = peerid('-WW0000-Em6o1EmvwLtD')
+test('WebTorrent', t => {
+  const parsed = peerid('-WW0000-Em6o1EmvwLtD')
   t.equal(parsed.client, 'WebTorrent')
   t.equal(parsed.version, '0.0')
   t.equal(peerid('-WW0100-Em6o1EmvwLtD').version, '1.0')
@@ -152,8 +152,8 @@ test('WebTorrent', function (t) {
   t.end()
 })
 
-test('WebTorrent Desktop', function (t) {
-  var parsed = peerid('-WD0007-Em6o1EmvwLtD')
+test('WebTorrent Desktop', t => {
+  const parsed = peerid('-WD0007-Em6o1EmvwLtD')
   t.equal(parsed.client, 'WebTorrent Desktop')
   t.equal(parsed.version, '0.7')
   t.end()

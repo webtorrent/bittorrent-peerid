@@ -315,6 +315,7 @@ function getAzStyleClientVersion (client, peerId) {
   addAzStyle('ST', 'SymTorrent', '2.34')
   addAzStyle('st', 'SharkTorrent')
   addAzStyle('SZ', 'Shareaza')
+  addAzStyle('TG', 'Torrent GO')
   addAzStyle('TN', 'Torrent.NET')
   addAzStyle('TR', 'Transmission', VER_AZ_TRANSMISSION_STYLE)
   addAzStyle('TS', 'TorrentStorm')

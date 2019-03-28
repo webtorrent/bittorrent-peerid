@@ -274,6 +274,7 @@ function getAzStyleClientVersion (client, peerId) {
   addAzStyle('ES', 'Electric Sheep', VER_AZ_THREE_DIGITS)
   addAzStyle('FC', 'FileCroc')
   addAzStyle('FG', 'FlashGet', VER_AZ_SKIP_FIRST_ONE_MAJ_TWO_MIN)
+  addAzStyle('FX', 'Freebox BitTorrent')
   addAzStyle('FT', 'FoxTorrent/RedSwoosh')
   addAzStyle('GR', 'GetRight', '1.2')
   addAzStyle('GS', 'GSTorrent')// TODO: Format is v"abcd"
@@ -323,6 +324,7 @@ function getAzStyleClientVersion (client, peerId) {
   addAzStyle('UE', '\u00B5Torrent Embedded', VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
   addAzStyle('UT', '\u00B5Torrent', VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
   addAzStyle('UM', '\u00B5Torrent Mac', VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
+  addAzStyle("UW", "\u00B5Torrent Web", VER_AZ_THREE_DIGITS_PLUS_MNEMONIC)
   addAzStyle('WD', 'WebTorrent Desktop', VER_AZ_WEBTORRENT_STYLE)// Go Webtorrent!! :)
   addAzStyle('WT', 'Bitlet')
   addAzStyle('WW', 'WebTorrent', VER_AZ_WEBTORRENT_STYLE)// Go Webtorrent!! :)

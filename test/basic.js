@@ -135,6 +135,8 @@ test('Unknown clients', t => {
   t.equal(peerid('000000DF05020020100020200008000000004028').client, 'unknown')
   t.equal(peerid('0000000000000000F106CE44F179A2498FAC614F').client, 'unknown')
   t.equal(peerid('E7F163BB0E5FCD35005C09A11BC274C42385A1A0').client, 'unknown')
+  t.equal(peerid('2D464435315DC72D37426772646B4C3850434239').client, 'unknown')
+  t.equal(peerid('2D4249313730302D66466D324E356B5848335068').client, 'unknown')
   t.end()
 })
 

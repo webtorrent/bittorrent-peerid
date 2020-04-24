@@ -13,7 +13,7 @@
   "dependencies": {},
   "devDependencies": {
     "standard": "*",
-    "tape": "^4.6.0"
+    "tape": "^5.0.0"
   },
   "keywords": [
     ".torrent",

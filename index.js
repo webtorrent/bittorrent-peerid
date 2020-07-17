@@ -1,3 +1,4 @@
+/*! bittorrent-peerid. MIT License. WebTorrent LLC <https://webtorrent.io/opensource> */
 const utils = require('./lib/utils')
 
 /**

@@ -245,7 +245,7 @@ function getAzStyleClientVersion (client, peerId) {
   return utils.getAzStyleVersionNumber(peerId.substring(3, 7), version)
 }
 
-((() => {
+(() => {
   // add known clients alphabetically
   addAzStyle('A~', 'Ares', VER_AZ_THREE_DIGITS)
   addAzStyle('AG', 'Ares', VER_AZ_THREE_DIGITS)
@@ -426,4 +426,4 @@ function getAzStyleClientVersion (client, peerId) {
   addSimpleClient('folx', '-FL')
   addSimpleClient('\u00B5Torrent Mac', '-UM')
   addSimpleClient('\u00B5Torrent', '-UT') // UT 3.4+
-}))()
+})()

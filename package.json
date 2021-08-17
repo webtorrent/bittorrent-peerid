@@ -15,7 +15,7 @@
     "@webtorrent/semantic-release-config": "1.0.5",
     "semantic-release": "17.4.5",
     "standard": "*",
-    "tape": "5.2.2"
+    "tape": "5.3.1"
   },
   "keywords": [
     ".torrent",

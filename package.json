@@ -10,7 +10,6 @@
   "bugs": {
     "url": "https://github.com/webtorrent/bittorrent-peerid/issues"
   },
-  "type": "module",
   "dependencies": {},
   "devDependencies": {
     "@webtorrent/semantic-release-config": "1.0.8",
@@ -27,12 +26,7 @@
     "webtorrent"
   ],
   "license": "MIT",
-  "engines": {
-    "node": ">=12.20.0"
-  },
-  "exports": {
-    "import": "./index.js"
-  },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/webtorrent/bittorrent-peerid.git"

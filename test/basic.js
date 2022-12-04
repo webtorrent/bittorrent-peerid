@@ -1,8 +1,8 @@
 // TODO: test versions
 // TODO: test clients with custom versioning schemes
 
-import test from 'tape'
-import peerid from '../index.js'
+const peerid = require('../')
+const test = require('tape')
 
 test('basic clients from utf8 strings', t => {
   t.equal(peerid('-AG2053-Em6o1EmvwLtD').client, 'Ares')

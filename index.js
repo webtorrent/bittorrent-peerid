@@ -1,5 +1,5 @@
 /*! bittorrent-peerid. MIT License. WebTorrent LLC <https://webtorrent.io/opensource> */
-import { decodeBitCometClient, decodeBitSpiritClient, getAzStyleVersionNumber, identifyAwkwardClient, isAzStyle, isMainlineStyle, isPossibleSpoofClient, isShadowStyle } from './lib/utils.js'
+const utils = require('./lib/utils')
 
 /**
  * Parses and returns the client type and version of a bittorrent peer id.
@@ -7,7 +7,7 @@ import { decodeBitCometClient, decodeBitSpiritClient, getAzStyleVersionNumber, i
  *
  * @param {Buffer|string} peerId (as Buffer or hex/utf8 string)
  */
-export default (peerId) => {
+module.exports = peerId => {
   let buffer
 
   if (Buffer.isBuffer(peerId)) {
@@ -32,14 +32,14 @@ export default (peerId) => {
 
   // If the client reuses parts of the peer ID of other peers, then try to determine this
   // first (before we misidentify the client).
-  if (isPossibleSpoofClient(peerId)) {
-    if ((client = decodeBitSpiritClient(peerId, buffer))) return client
-    if ((client = decodeBitCometClient(peerId, buffer))) return client
+  if (utils.isPossibleSpoofClient(peerId)) {
+    if ((client = utils.decodeBitSpiritClient(peerId, buffer))) return client
+    if ((client = utils.decodeBitCometClient(peerId, buffer))) return client
     return { client: 'BitSpirit?' }
   }
 
   // See if the client uses Az style identification
-  if (isAzStyle(peerId)) {
+  if (utils.isAzStyle(peerId)) {
     if ((client = getAzStyleClientName(peerId))) {
       const version = getAzStyleClientVersion(client, peerId)
 
@@ -76,7 +76,7 @@ export default (peerId) => {
   }
 
   // See if the client uses Shadow style identification
-  if (isShadowStyle(peerId)) {
+  if (utils.isShadowStyle(peerId)) {
     if ((client = getShadowStyleClientName(peerId))) {
       // TODO: handle shadow style client version numbers
       return { client }
@@ -84,7 +84,7 @@ export default (peerId) => {
   }
 
   // See if the client uses Mainline style identification
-  if (isMainlineStyle(peerId)) {
+  if (utils.isMainlineStyle(peerId)) {
     if ((client = getMainlineStyleClientName(peerId))) {
       // TODO: handle mainline style client version numbers
       return { client }
@@ -92,8 +92,8 @@ export default (peerId) => {
   }
 
   // Check for BitSpirit / BitComet disregarding spoof mode
-  if ((client = decodeBitSpiritClient(peerId, buffer))) return client
-  if ((client = decodeBitCometClient(peerId, buffer))) return client
+  if ((client = utils.decodeBitSpiritClient(peerId, buffer))) return client
+  if ((client = utils.decodeBitCometClient(peerId, buffer))) return client
 
   // See if the client identifies itself using a particular substring
   const data = getSimpleClient(peerId)
@@ -108,7 +108,7 @@ export default (peerId) => {
   }
 
   // See if client is known to be awkward / nonstandard
-  if ((client = identifyAwkwardClient(peerId, buffer))) {
+  if ((client = utils.identifyAwkwardClient(peerId, buffer))) {
     return client
   }
 
@@ -242,7 +242,7 @@ function getAzStyleClientVersion (client, peerId) {
   const version = azStyleClientVersions[client]
   if (!version) return null
 
-  return getAzStyleVersionNumber(peerId.substring(3, 7), version)
+  return utils.getAzStyleVersionNumber(peerId.substring(3, 7), version)
 }
 
 (() => {

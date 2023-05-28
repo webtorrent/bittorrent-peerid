@@ -305,6 +305,7 @@ function getAzStyleClientVersion (client, peerId) {
   addAzStyle('pX', 'pHoeniX')
   addAzStyle('qB', 'qBittorrent', VER_AZ_DELUGE)
   addAzStyle('QD', 'qqdownload')
+  addAzStyle('RM', 'RUM Torrent')
   addAzStyle('RT', 'Retriever')
   addAzStyle('RZ', 'RezTorrent')
   addAzStyle('S~', 'Shareaza alpha/beta')

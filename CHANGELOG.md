@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/webtorrent/bittorrent-peerid/compare/v2.0.1...v2.0.2) (2026-05-25)
+
+
+### Bug Fixes
+
+* Add .github directory to .npmignore ([9df412d](https://github.com/webtorrent/bittorrent-peerid/commit/9df412dda2df7c76c67dd0bad1e8f41de4bcd1dd))
+
 ## [2.0.1](https://github.com/webtorrent/bittorrent-peerid/compare/v2.0.0...v2.0.1) (2026-05-25)
 
 
